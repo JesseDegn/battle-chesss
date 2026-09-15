@@ -34,11 +34,22 @@
     "not_found_handling": "single-page-application",
 
     // By default Cloudflare serves a matching static file WITHOUT ever
-    // running our Worker script, for speed. The one path that must
-    // never be treated as a static file is "/ws" -- that's the
-    // WebSocket endpoint the ONLINE mode connects to, and it has to run
-    // our own server code (src/worker.js), not the static file server.
-    "run_worker_first": ["/ws"]
+    // running our Worker script, for speed. `true` here means "run our
+    // Worker script first for every request, no exceptions" -- necessary
+    // because the ONLINE mode's WebSocket endpoint ("/ws") must be
+    // handled by our own server code (src/worker.js), not the static
+    // file server. src/worker.js checks for "/ws" itself and falls back
+    // to env.ASSETS.fetch(request) -- "just serve the static file" --
+    // for every other path, so this has no effect on how the site is
+    // served; it only changes who decides.
+    //
+    // (An earlier version of this config used run_worker_first: ["/ws"]
+    // -- a list of just the paths that need the Worker -- which is
+    // supported by newer Wrangler releases but not by the Wrangler
+    // version Cloudflare's build pipeline installs by default as of this
+    // writing. `true` works on every version, so it's the safer choice
+    // here.)
+    "run_worker_first": true
   },
 
   "observability": {
