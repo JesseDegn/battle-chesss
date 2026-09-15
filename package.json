@@ -1,0 +1,15 @@
+{
+  "name": "chess-battle-jesse-degn",
+  "version": "0.1.0",
+  "description": "Battle Chess: hot-seat, vs-computer, and online browser chess on Cloudflare Workers.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}

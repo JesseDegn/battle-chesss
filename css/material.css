@@ -1,0 +1,51 @@
+/* material.css — the captured-pieces + material-count panel (the
+   "built last" optional extra). Small, quiet, and out of the way of
+   the board itself. */
+
+.material-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.material-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 6px 8px;
+  min-height: 30px;
+}
+
+.material-label {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+.material-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  flex: 1;
+}
+
+.material-icons .piece {
+  width: 20px;
+  height: 20px;
+  filter: none;
+  display: inline-flex;
+}
+
+.material-none {
+  font-size: 0.75rem;
+  opacity: 0.4;
+}
+
+.material-advantage {
+  font-weight: 700;
+  color: var(--gold, #d4a94a);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}

@@ -1,0 +1,133 @@
+/* animations.css — the piece-specific "ready" flourish (on select) and
+   "defeat" animation (on capture). Selectors are scoped by
+   `.piece[data-type="X"]` so each of the six pieces gets a flourish and
+   a defeat animation that actually makes sense for what it is (see
+   ProductSpec.md §4). All of these are visual-only: art.js applies and
+   removes the classes; game logic never waits on them to finish before
+   the move/capture is already recorded. */
+
+.piece-svg .part-body,
+.piece-svg .part-head,
+.piece-svg .part-weapon,
+.piece-svg .part-banner,
+.piece-svg .part-mane,
+.piece-svg .part-cape,
+.piece-svg .part-crown {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- Selection flourishes (piece.flourish) ---------- */
+
+/* Pawn: infantry gives a short spear jab. */
+.piece[data-type="p"].flourish .part-weapon {
+  animation: jab 0.4s ease;
+}
+@keyframes jab {
+  0%, 100% { transform: translate(0, 0) rotate(0); }
+  40% { transform: translate(6px, -4px) rotate(-8deg); }
+}
+
+/* Knight: cavalry rears up briefly. */
+.piece[data-type="n"].flourish {
+  animation: rear 0.45s ease;
+}
+@keyframes rear {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  45% { transform: translateY(-6px) rotate(-10deg); }
+}
+
+/* Bishop: standard-bearer's banner ripples. */
+.piece[data-type="b"].flourish .part-banner {
+  animation: ripple 0.5s ease;
+}
+@keyframes ripple {
+  0%, 100% { transform: skewY(0deg); }
+  25% { transform: skewY(-8deg); }
+  50% { transform: skewY(6deg); }
+  75% { transform: skewY(-4deg); }
+}
+
+/* Rook: siege tower gives a grounded shake. */
+.piece[data-type="r"].flourish {
+  animation: shake 0.4s ease;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+/* Queen: commander's cape flutters. */
+.piece[data-type="q"].flourish .part-cape {
+  animation: flutter 0.5s ease;
+}
+@keyframes flutter {
+  0%, 100% { transform: skewX(0deg) scaleX(1); }
+  50% { transform: skewX(6deg) scaleX(1.05); }
+}
+
+/* King: crown catches the light. */
+.piece[data-type="k"].flourish .part-crown {
+  animation: glint 0.5s ease;
+}
+@keyframes glint {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.6); }
+}
+
+/* ---------- Capture ("defeat") animations (piece.capturing) ---------- */
+
+.piece[data-type="p"].capturing {
+  animation: fall-forward 0.48s ease forwards;
+}
+.piece[data-type="n"].capturing {
+  animation: topple-side 0.48s ease forwards;
+}
+.piece[data-type="b"].capturing {
+  animation: sink-fade 0.48s ease forwards;
+}
+.piece[data-type="b"].capturing .part-banner {
+  animation: droop 0.48s ease forwards;
+}
+.piece[data-type="r"].capturing {
+  animation: crumble 0.48s ease forwards;
+  transform-origin: bottom center;
+}
+.piece[data-type="q"].capturing {
+  animation: fall-forward 0.48s ease forwards;
+}
+.piece[data-type="k"].capturing {
+  animation: sink-fade 0.48s ease forwards;
+}
+
+@keyframes fall-forward {
+  0% { transform: rotate(0) translateY(0); opacity: 1; }
+  100% { transform: rotate(78deg) translateY(10px); opacity: 0; }
+}
+@keyframes topple-side {
+  0% { transform: rotate(0) translateX(0); opacity: 1; }
+  100% { transform: rotate(-92deg) translateX(-14px); opacity: 0; }
+}
+@keyframes sink-fade {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(8px) scale(0.85); opacity: 0; }
+}
+@keyframes droop {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(35deg); }
+}
+@keyframes crumble {
+  0% { transform: scaleY(1); opacity: 1; }
+  60% { transform: scaleY(0.6); opacity: 0.8; }
+  100% { transform: scaleY(0.15); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .piece, .piece-svg .part-body, .piece-svg .part-head, .piece-svg .part-weapon,
+  .piece-svg .part-banner, .piece-svg .part-mane, .piece-svg .part-cape, .piece-svg .part-crown {
+    animation: none !important;
+    transition: none !important;
+  }
+}

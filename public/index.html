@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Battle Chess</title>
+  <meta name="description" content="Browser chess with armored countries at war: hot-seat, vs computer, and online." />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/board.css" />
+  <link rel="stylesheet" href="css/pieces.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/material.css" />
+</head>
+<body>
+  <div class="bunting-row" aria-hidden="true">
+    <div class="bunting">
+      <span class="pennant" style="background:#1E3A8A; --sway-delay:0s"></span>
+      <span class="pennant" style="background:#DC2626; --sway-delay:0.2s"></span>
+      <span class="pennant" style="background:#D4A94A; --sway-delay:0.4s"></span>
+      <span class="pennant" style="background:#15803D; --sway-delay:0.6s"></span>
+      <span class="pennant" style="background:#F8FAFC; --sway-delay:0.1s"></span>
+      <span class="pennant" style="background:#1F2937; --sway-delay:0.3s"></span>
+      <span class="pennant" style="background:#EA580C; --sway-delay:0.5s"></span>
+      <span class="pennant" style="background:#1D4ED8; --sway-delay:0.15s"></span>
+      <span class="pennant" style="background:#FACC15; --sway-delay:0.35s"></span>
+      <span class="pennant" style="background:#16A34A; --sway-delay:0.55s"></span>
+      <span class="pennant" style="background:#7C2D12; --sway-delay:0.25s"></span>
+      <span class="pennant" style="background:#4C1D95; --sway-delay:0.45s"></span>
+      <span class="pennant" style="background:#DC2626; --sway-delay:0.05s"></span>
+      <span class="pennant" style="background:#D4A94A; --sway-delay:0.65s"></span>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <h1>⚔ Battle Chess</h1>
+    <p>Pick your country. Take the field. Full legal chess, every time.</p>
+  </header>
+
+  <main>
+    <!-- MODE PICKER -->
+    <section id="screen-mode" class="screen">
+      <div class="mode-arena">
+        <div class="honor-banner honor-banner-left" aria-hidden="true">
+          <svg viewBox="0 0 60 160" class="honor-banner-svg">
+            <rect x="27" y="4" width="5" height="150" fill="#5b3a1e" stroke="#1c1917" stroke-width="1.5" rx="2"/>
+            <circle cx="29.5" cy="6" r="6" fill="#d4a94a" stroke="#1c1917" stroke-width="1.5"/>
+            <g class="honor-flag">
+              <path d="M32 16 L56 24 L46 36 L56 48 L32 56 Z" fill="#2c4118" stroke="#1c1917" stroke-width="2"/>
+              <path d="M37 24 L37 48" stroke="#d4a94a" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="mode-grid">
+          <button class="mode-card" data-mode="hotseat">
+            <span class="mode-icon icon-swords" aria-hidden="true">
+              <svg viewBox="0 0 64 64" class="mode-icon-svg">
+                <g class="sword sword-a" transform="rotate(-40 32 32)">
+                  <rect x="30" y="6" width="4" height="32" rx="1" fill="#e8e2d0" stroke="#1c1917" stroke-width="1"/>
+                  <polygon points="32,2 35,10 29,10" fill="#e8e2d0" stroke="#1c1917" stroke-width="1"/>
+                  <rect x="22" y="38" width="20" height="4" rx="1" fill="#3f5c26" stroke="#1c1917" stroke-width="1"/>
+                  <rect x="29" y="42" width="6" height="12" rx="2" fill="#8a5a2b"/>
+                </g>
+                <g class="sword sword-b" transform="rotate(40 32 32)">
+                  <rect x="30" y="6" width="4" height="32" rx="1" fill="#e8e2d0" stroke="#1c1917" stroke-width="1"/>
+                  <polygon points="32,2 35,10 29,10" fill="#e8e2d0" stroke="#1c1917" stroke-width="1"/>
+                  <rect x="22" y="38" width="20" height="4" rx="1" fill="#3f5c26" stroke="#1c1917" stroke-width="1"/>
+                  <rect x="29" y="42" width="6" height="12" rx="2" fill="#8a5a2b"/>
+                </g>
+              </svg>
+            </span>
+            <h2>Hot-Seat</h2>
+            <p>Two people, one screen. Pass the device back and forth and take turns.</p>
+          </button>
+          <button class="mode-card" data-mode="computer">
+            <span class="mode-icon icon-computer" aria-hidden="true">
+              <svg viewBox="0 0 64 64" class="mode-icon-svg">
+                <g class="gear-ring">
+                  <circle cx="32" cy="32" r="21" fill="none" stroke="#d4a94a" stroke-width="2.5" opacity="0.55"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8"/>
+                  <rect x="30.5" y="51" width="3" height="7" fill="#d4a94a" opacity="0.8"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(45 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(90 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(135 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(180 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(225 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(270 32 32)"/>
+                  <rect x="30.5" y="6" width="3" height="7" fill="#d4a94a" opacity="0.8" transform="rotate(315 32 32)"/>
+                </g>
+                <path d="M20 30 Q20 14 32 14 Q44 14 44 30 L44 38 Q44 47 32 51 Q20 47 20 38 Z" fill="#2c4118" stroke="#1c1917" stroke-width="2"/>
+                <rect x="30" y="9" width="4" height="8" fill="#d4a94a" stroke="#1c1917" stroke-width="1"/>
+                <rect class="visor-slit" x="24" y="28" width="16" height="5" rx="2" fill="#dc2626"/>
+              </svg>
+            </span>
+            <h2>Vs Computer</h2>
+            <p>You play one side. The browser plays the other, thinking a couple of moves ahead.</p>
+          </button>
+          <button class="mode-card" data-mode="online">
+            <span class="mode-icon icon-online" aria-hidden="true">
+              <svg viewBox="0 0 64 64" class="mode-icon-svg">
+                <g class="banner-flag banner-flag-a" transform="rotate(-25 32 32)">
+                  <rect x="30" y="10" width="3" height="42" fill="#8a5a2b" stroke="#1c1917" stroke-width="1"/>
+                  <path d="M33 12 L52 17 L46 23 L52 29 L33 34 Z" fill="#d4a94a" stroke="#1c1917" stroke-width="1.5"/>
+                </g>
+                <g class="banner-flag banner-flag-b" transform="rotate(25 32 32)">
+                  <rect x="30" y="10" width="3" height="42" fill="#8a5a2b" stroke="#1c1917" stroke-width="1"/>
+                  <path d="M33 12 L52 17 L46 23 L52 29 L33 34 Z" fill="#3f5c26" stroke="#1c1917" stroke-width="1.5"/>
+                </g>
+                <circle class="signal-dot" cx="32" cy="32" r="2.6" fill="#dc2626"/>
+              </svg>
+            </span>
+            <h2>Online</h2>
+            <p>Two devices, one room code. The server referees and keeps both screens in sync live.</p>
+          </button>
+        </div>
+
+        <div class="honor-banner honor-banner-right" aria-hidden="true">
+          <svg viewBox="0 0 60 160" class="honor-banner-svg">
+            <rect x="27" y="4" width="5" height="150" fill="#5b3a1e" stroke="#1c1917" stroke-width="1.5" rx="2"/>
+            <circle cx="29.5" cy="6" r="6" fill="#d4a94a" stroke="#1c1917" stroke-width="1.5"/>
+            <g class="honor-flag">
+              <path d="M32 16 L56 24 L46 36 L56 48 L32 56 Z" fill="#2c4118" stroke="#1c1917" stroke-width="2"/>
+              <path d="M37 24 L37 48" stroke="#d4a94a" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTRY / SETUP SCREEN (contents swapped per mode by main.js) -->
+    <section id="screen-setup" class="screen" hidden>
+      <h2 id="setup-title">Choose your countries</h2>
+      <div id="setup-body" class="country-setup"></div>
+      <div class="setup-actions">
+        <button class="secondary-btn" id="setup-back-btn">← Back</button>
+        <button class="primary-btn" id="setup-start-btn" disabled>Start</button>
+      </div>
+    </section>
+
+    <!-- GAME SCREEN (shared by all three modes) -->
+    <section id="screen-game" class="screen" hidden>
+      <div class="game-layout">
+        <div class="battlefield-wrap">
+          <div id="board"></div>
+        </div>
+        <div class="side-panel">
+          <div id="turn-indicator-w" class="turn-indicator">
+            <span class="swatch-bar"></span>
+            <span class="turn-label">—</span>
+          </div>
+          <div id="turn-indicator-b" class="turn-indicator">
+            <span class="swatch-bar"></span>
+            <span class="turn-label">—</span>
+          </div>
+          <div id="status-message" class="status-message" role="status" aria-live="polite"></div>
+
+          <div id="material-panel" class="material-panel"></div>
+
+          <div id="online-panel" hidden>
+            <div id="room-code-display" class="room-code-display"></div>
+            <p id="online-status" style="font-size:0.85rem; opacity:0.85;"></p>
+            <span id="spectator-badge" class="spectator-badge" hidden>Spectating</span>
+            <button class="secondary-btn" id="online-resign-btn" hidden>Resign</button>
+          </div>
+
+          <button class="primary-btn" id="new-game-btn">New Game</button>
+          <button class="secondary-btn" id="menu-btn">← Menu</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="bunting-row bunting-row--footer" aria-hidden="true">
+    <div class="bunting">
+      <span class="pennant" style="background:#4C1D95; --sway-delay:0.1s"></span>
+      <span class="pennant" style="background:#D4A94A; --sway-delay:0.3s"></span>
+      <span class="pennant" style="background:#DC2626; --sway-delay:0.5s"></span>
+      <span class="pennant" style="background:#1D4ED8; --sway-delay:0.2s"></span>
+      <span class="pennant" style="background:#F8FAFC; --sway-delay:0.4s"></span>
+      <span class="pennant" style="background:#15803D; --sway-delay:0.6s"></span>
+      <span class="pennant" style="background:#EA580C; --sway-delay:0s"></span>
+      <span class="pennant" style="background:#1F2937; --sway-delay:0.35s"></span>
+      <span class="pennant" style="background:#FACC15; --sway-delay:0.55s"></span>
+      <span class="pennant" style="background:#16A34A; --sway-delay:0.15s"></span>
+    </div>
+  </div>
+
+  <footer class="app-footer">Battle Chess — hand-written rules engine, no chess library, plain HTML/CSS/JS.</footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Project name -> also the default *.workers.dev subdomain Cloudflare
+  // gives this Worker once deployed.
+  "name": "chess-battle-jesse-degn",
+
+  // Cloudflare asks every Worker to pin the version of its runtime
+  // behavior it was built against, so future platform changes never
+  // silently change how this app behaves. Set to the day this project
+  // was built; there is no need to change it later.
+  "compatibility_date": "2026-09-15",
+
+  // The Worker script itself -- the small piece of server code that
+  // upgrades WebSocket connections and talks to the Room Durable Object.
+  // Everything else (the HTML/CSS/JS the browser downloads) is served
+  // straight from `assets`, below, with no Worker code involved.
+  "main": "src/worker.js",
+
+  "assets": {
+    // Every file in public/ is served as-is (index.html, css/, js/).
+    "directory": "./public",
+
+    // Lets src/worker.js fall back to "just serve the static file" via
+    // env.ASSETS.fetch(request) for every path except the ones it
+    // handles itself (currently only "/ws").
+    "binding": "ASSETS",
+
+    // Cloudflare Workers Free plan, static-site behavior: if someone
+    // requests a path that isn't a real file (there's only one real
+    // page, index.html), serve index.html instead of a 404. This app
+    // doesn't do client-side routing today, but this is the standard,
+    // harmless setting for a single-page app and avoids ever showing a
+    // bare Cloudflare 404 to a visitor.
+    "not_found_handling": "single-page-application",
+
+    // By default Cloudflare serves a matching static file WITHOUT ever
+    // running our Worker script, for speed. The one path that must
+    // never be treated as a static file is "/ws" -- that's the
+    // WebSocket endpoint the ONLINE mode connects to, and it has to run
+    // our own server code (src/worker.js), not the static file server.
+    "run_worker_first": ["/ws"]
+  },
+
+  "observability": {
+    // Cloudflare's built-in request logging/metrics for this Worker.
+    // Free to enable, useful for seeing errors after deploying.
+    "enabled": true
+  },
+
+  // ONLINE mode: one Durable Object per room code (src/room.js),
+  // reached from the Worker as env.ROOM.getByName(roomCode). "ROOM" is
+  // just this binding's name -- src/worker.js is what actually uses it.
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOM",
+        "class_name": "Room"
+      }
+    ]
+  },
+
+  // Durable Object classes must be declared in a migration the first
+  // time they're deployed. `new_sqlite_classes` (rather than the older,
+  // non-SQLite kind of Durable Object) is what gives each Room its own
+  // SQLite database to persist the game position in -- see
+  // src/room.js's use of ctx.storage.sql.
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["Room"]
+    }
+  ]
+}
